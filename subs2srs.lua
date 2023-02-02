@@ -587,11 +587,11 @@ local main = (function()
         mp.add_key_binding("Alt+l", "mpvacious-sub-seek-forward-pause", _ { play_control.sub_seek, 'forward', true })
 
         mp.add_key_binding("Ctrl+h", "mpvacious-sub-rewind", _ { play_control.sub_rewind })
-        mp.add_key_binding("F1", "mpvacious-sub-replay", _ { play_control.play_till_sub_end })
-        mp.add_key_binding("F2", "mpvacious-sub-play-up-to-next", _ { play_control.play_till_next_sub_end })
-        mp.add_key_binding("F3", "mpvacious-LFooT", _ { play_control.play_lfoot })
-        mp.add_key_binding("F4", "mpvacious-LFooT-F1-extra", _ { play_control.play_F1_extra })
-        mp.add_key_binding("F7", "mpvacious-update-last-note", _ {update_last_note, false})
+        mp.add_key_binding("F2", "mpvacious-sub-replay", _ { play_control.play_till_sub_end })               --1x subtitle jump back, play till pause
+        mp.add_key_binding("F3", "mpvacious-sub-play-up-to-next", _ { play_control.play_till_next_sub_end }) -- play and pause at new sub END
+        mp.add_key_binding("F1", "mpvacious-LFooT", _ { play_control.play_lfoot })                           --2x subtitle jump back, play till pause
+        mp.add_key_binding("F4", "mpvacious-LFooT-F1-extra", _ { play_control.play_F1_extra })               --1.1x subtitle jump back, play till pause
+        mp.add_key_binding("F8", "mpvacious-update-last-note", _ {update_last_note, false})                  -- update the last Anki note
     end
 end)()
 
