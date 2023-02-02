@@ -14,7 +14,7 @@ local current_sub
 
 local function stop_at_the_end(sub)
     pause_timer.set_stop_time(sub['end'] - 0.050)
-    h.notify("Playing till the end of the sub...", "info", 3)
+    -- h.notify("Playing till the end of the sub...", "info", 3)
 end
 
 local function play_till_sub_end()
@@ -22,6 +22,24 @@ local function play_till_sub_end()
     mp.commandv('seek', sub['start'], 'absolute')
     mp.set_property("pause", "no")
     stop_at_the_end(sub)
+    h.notify("1x...", "info", 3)
+end
+
+local function play_F1_extra()
+    local sub = Subtitle:now()
+    mp.commandv('seek', sub['start'], 'absolute')
+    mp.commandv("seek", "-0.2", "relative+exact")
+    mp.set_property("pause", "no")
+    stop_at_the_end(sub)
+    h.notify("1.1x...", "info", 3)
+end
+
+local function play_lfoot()
+    local sub = Subtitle:now()
+    mp.commandv("sub_seek", true and '-1' or '1')
+    mp.set_property("pause", "no")
+    stop_at_the_end(sub)
+    h.notify("2x...", "info", 3)
 end
 
 local function sub_seek(direction, pause)
@@ -50,7 +68,7 @@ local function play_till_next_sub_end()
     current_sub = Subtitle:now()
     mp.observe_property("sub-text", "string", check_sub)
     mp.set_property("pause", "no")
-    h.notify("Waiting till next sub...", "info", 10)
+    h.notify("play pause...", "info", 10)
 end
 
 return {
@@ -58,4 +76,6 @@ return {
     play_till_next_sub_end = play_till_next_sub_end,
     sub_seek = sub_seek,
     sub_rewind = sub_rewind,
+    play_lfoot = play_lfoot,
+    play_F1_extra = play_F1_extra
 }
