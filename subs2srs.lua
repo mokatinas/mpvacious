@@ -81,12 +81,12 @@ local config = {
     -- Anki
     create_deck = false, -- automatically create a deck for new cards
     allow_duplicates = false, -- allow making notes with the same sentence field
-    deck_name = "Learning", -- name of the deck for new cards
-    model_name = "Japanese sentences", -- Tools -> Manage note types
-    sentence_field = "SentKanji",
-    secondary_field = "SentEng",
-    audio_field = "SentAudio",
-    image_field = "Image",
+    deck_name = "Auto", -- name of the deck for new cards
+    model_name = "Canto Auto", -- Tools -> Manage note types
+    sentence_field = "sentenceCN",
+    --secondary_field = "SentEng",
+    audio_field = "sentenceMP3",
+    image_field = "image",
     image_template = '<img alt="snapshot" src="%s">',
     append_media = true, -- True to append video media after existing data, false to insert media before
     disable_gui_browse = false, -- Lets you disable anki browser manipulation by mpvacious.
@@ -108,11 +108,11 @@ local config = {
 
     -- Misc info
     miscinfo_enable = true,
-    miscinfo_field = "Notes", -- misc notes and source information field
+    miscinfo_field = "notes", -- misc notes and source information field
     miscinfo_format = "%n EP%d (%t)", -- format string to use for the miscinfo_field, accepts note_tag-style format strings
 
     -- Forvo support
-    use_forvo = "yes", -- 'yes', 'no', 'always'
+    use_forvo = "no", -- 'yes', 'no', 'always'
     vocab_field = "VocabKanji", -- target word field
     vocab_audio_field = "VocabAudio", -- target word audio
 }
@@ -266,11 +266,12 @@ local function maybe_remove_all_spaces(str)
     end
 end
 
+
 local function copy_to_clipboard(_, text)
     if not h.is_empty(text) then
         text = config.clipboard_trim_enabled and h.trim(text) or h.remove_newlines(text)
         text = maybe_remove_all_spaces(text)
-        platform.copy_to_clipboard(text)
+        platform.copy_to_clipboard(text)        
     end
 end
 
@@ -451,7 +452,7 @@ menu.keybindings = {
     { key = 'r', fn = menu:with_update { subs_observer.clear_and_notify } },
     { key = 'g', fn = menu:with_update { export_to_anki, true } },
     { key = 'n', fn = menu:with_update { export_to_anki, false } },
-    { key = 'm', fn = menu:with_update { update_last_note, false } },
+    { key = 'F7', fn = menu:with_update { update_last_note, false } },
     { key = 'M', fn = menu:with_update { update_last_note, true } },
     { key = 't', fn = menu:with_update { clip_autocopy.toggle } },
     { key = 'i', fn = menu:with_update { menu.hints_state.bump } },
@@ -582,12 +583,15 @@ local main = (function()
         mp.add_key_binding("H", "mpvacious-sub-seek-back", _ { play_control.sub_seek, 'backward' })
         mp.add_key_binding("L", "mpvacious-sub-seek-forward", _ { play_control.sub_seek, 'forward' })
 
-        mp.add_key_binding("Alt+h", "mpvacious-sub-seek-back-pause", _ { play_control.sub_seek, 'backward', true })
+        mp.add_key_binding("Alt+h", "mpvacious-sub-seek-back-pause", _ { play_control.sub_seek, 'backward', false })
         mp.add_key_binding("Alt+l", "mpvacious-sub-seek-forward-pause", _ { play_control.sub_seek, 'forward', true })
 
         mp.add_key_binding("Ctrl+h", "mpvacious-sub-rewind", _ { play_control.sub_rewind })
-        mp.add_key_binding("Ctrl+H", "mpvacious-sub-replay", _ { play_control.play_till_sub_end })
-        mp.add_key_binding("Ctrl+L", "mpvacious-sub-play-up-to-next", _ { play_control.play_till_next_sub_end })
+        mp.add_key_binding("F1", "mpvacious-sub-replay", _ { play_control.play_till_sub_end })
+        mp.add_key_binding("F2", "mpvacious-sub-play-up-to-next", _ { play_control.play_till_next_sub_end })
+        mp.add_key_binding("F3", "mpvacious-LFooT", _ { play_control.play_lfoot })
+        mp.add_key_binding("F4", "mpvacious-LFooT-F1-extra", _ { play_control.play_F1_extra })
+        mp.add_key_binding("F7", "mpvacious-update-last-note", _ {update_last_note, false})
     end
 end)()
 
